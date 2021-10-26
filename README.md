@@ -1,2 +1,2 @@
-# crop-edit-image-with-react-konva-react-image-file-resizer
+# image-editor-react-konva
 Created with CodeSandbox
