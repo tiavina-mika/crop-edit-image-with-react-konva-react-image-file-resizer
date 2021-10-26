@@ -10,7 +10,7 @@ import { convertUrltoFile } from "../utils/utils";
  * @param {string} extension "JPEG, PNG, WEBP"
  * @param {string} outputType "base64, file"
  */
-const resizeFile = ({
+export const resizeFile = ({
   file,
   width = 300,
   height = 300,
@@ -23,7 +23,7 @@ const resizeFile = ({
       width,
       height,
       extension,
-      100,
+      70,
       0,
       (uri) => {
         resolve(uri);
@@ -33,7 +33,7 @@ const resizeFile = ({
   });
 };
 
-export const useImageResize = ({ file }) => {
+export const useImageResize = ({ file, layer, zoom }) => {
   const [drawing, setDrawing] = useState("");
   const [initialSize, setInitialSize] = useState(0);
   const [finalSize, setFinalSize] = useState(0);
@@ -45,15 +45,31 @@ export const useImageResize = ({ file }) => {
           file.src,
           "originalImage.jpg"
         );
+        let width;
+        let height;
+        if (file.naturalWidth * zoom >= layer.width) {
+          width = layer.width * 1.2;
+        }
+        if (file.naturalHeight * zoom >= layer.height) {
+          height = layer.height * 1.2;
+        }
         const resizedImage = await resizeFile({
-          file: originalFile
+          file: originalFile,
+          width,
+          height
         });
         const resizedImageFile = await convertUrltoFile(
           resizedImage,
           "finalImage.jpg"
         );
 
-        // // console.log(resizedFinalFile);
+        // console.log('originalFile.size', originalFile.size / 1000000);
+        // console.log('resizedImageFile.size', resizedImageFile.size / 1000000);
+        // console.log('file.naturalWidth', file.naturalWidth)
+        // console.log('file.naturalHeight', file.naturalHeight)
+        // console.log('layer.width', layer.width)
+        // console.log('layer.height', layer.height)
+
         setInitialSize(originalFile.size);
         setFinalSize(resizedImageFile.size);
 
@@ -64,7 +80,7 @@ export const useImageResize = ({ file }) => {
     };
 
     reSize();
-  }, [file, setDrawing]);
+  }, [file, setDrawing, layer, zoom]);
 
   return {
     resizedImage: drawing,

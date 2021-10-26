@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Stage, Layer, Image } from "react-konva";
 import useImage from "use-image";
 
@@ -6,6 +6,9 @@ import mask from "../images/mask-deformed-circle.png";
 
 import Slider from "../components/Slider";
 import { useCropper, ZOOM_MAX, ZOOM_STEP } from "../hooks/useCropper";
+import { resizeFile, useImageResize } from "../hooks/userImageResize";
+import { convertUrltoFile } from "../utils/utils";
+import ResizedImage from "./ResizedImage";
 
 const USER_IMAGE_LAYER = {
   width: 624,
@@ -43,6 +46,12 @@ const ImageEditor = ({ image }) => {
     imageMask,
     layer: USER_IMAGE_LAYER,
     maskLayer: MASK_LAYER
+  });
+
+  const { resizedImage, initialSize, finalSize } = useImageResize({
+    file: image,
+    layer: MASK_LAYER,
+    zoom
   });
 
   const onMouseEnter = (event) => {
@@ -101,6 +110,12 @@ const ImageEditor = ({ image }) => {
           tooltipVisible={false}
         />
       </div>
+      <ResizedImage
+        file={image}
+        resizedImage={resizedImage}
+        initialSize={initialSize}
+        finalSize={finalSize}
+      />
     </div>
   );
 };
