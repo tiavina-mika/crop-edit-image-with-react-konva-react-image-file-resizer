@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Resizer from "react-image-file-resizer";
+import { useImageResize } from "../hooks/userImageResize";
 import { convertUrltoFile } from "../utils/utils";
 
 /**
@@ -34,37 +35,7 @@ const resizeFile = ({
 };
 
 const ImageResize = ({ file }) => {
-  const [drawing, setDrawing] = useState("");
-  const [initialSize, setInitialSize] = useState(0);
-  const [finalSize, setFinalSize] = useState(0);
-
-  useEffect(() => {
-    const reSize = async () => {
-      try {
-        const originalFile = await convertUrltoFile(
-          file.src,
-          "originalImage.jpg"
-        );
-        const resizedImage = await resizeFile({
-          file: originalFile
-        });
-        const resizedImageFile = await convertUrltoFile(
-          resizedImage,
-          "finalImage.jpg"
-        );
-
-        // // console.log(resizedFinalFile);
-        setInitialSize(originalFile.size);
-        setFinalSize(resizedImageFile.size);
-
-        setDrawing(resizedImage);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    reSize();
-  }, [file, setDrawing]);
+  const { resizedImage, initialSize, finalSize } = useImageResize({ file });
 
   return (
     <div className="flexCenter p-x-20 p-y-20">
@@ -76,7 +47,7 @@ const ImageResize = ({ file }) => {
       </div>
 
       <div>
-        <img alt="drawing" src={drawing} />
+        <img alt="drawing" src={resizedImage} />
       </div>
     </div>
   );
