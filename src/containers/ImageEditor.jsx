@@ -2,15 +2,10 @@ import React from "react";
 import { Stage, Layer, Image } from "react-konva";
 import useImage from "use-image";
 
-import "./style.css";
-import mask from "./images/mask-deformed-circle.png";
-// import mask from "./images/mask-circle.png";
+import mask from "../images/mask-deformed-circle.png";
 
-// import userImage from "./images/bmw.png";
-// import userImage from "./images/UI-Lovecraft.jpg";
-import userImage from "./images/UI-Goethe.jpg";
-import Slider from "./Slider";
-import { useCropper, ZOOM_MAX, ZOOM_STEP } from "./hooks/useCropper";
+import Slider from "../components/Slider";
+import { useCropper, ZOOM_MAX, ZOOM_STEP } from "../hooks/useCropper";
 
 const USER_IMAGE_LAYER = {
   width: 624,
@@ -30,7 +25,6 @@ const MASK_LAYER = {
 
 const ImageEditor = ({ image }) => {
   // Anonymous as crossOrigin to be able to do getImageData on it
-  // const [image] = useImage(userImage, "Anonymous");
   const [imageMask] = useImage(mask, "Anonymous");
 
   const {
