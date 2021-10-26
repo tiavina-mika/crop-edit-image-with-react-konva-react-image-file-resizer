@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Resizer from "react-image-file-resizer";
-
-const urltoFile = (url, filename, mimeType = "image/jpeg") => {
-  return fetch(url)
-    .then(function (res) {
-      return res.arrayBuffer();
-    })
-    .then(function (buf) {
-      return new File([buf], filename, { type: mimeType });
-    });
-};
+import { convertUrltoFile } from "../utils/utils";
 
 /**
  *
@@ -50,11 +41,14 @@ const ImageResize = ({ file }) => {
   useEffect(() => {
     const reSize = async () => {
       try {
-        const originalFile = await urltoFile(file.src, "originalImage.jpg");
+        const originalFile = await convertUrltoFile(
+          file.src,
+          "originalImage.jpg"
+        );
         const resizedImage = await resizeFile({
           file: originalFile
         });
-        const resizedImageFile = await urltoFile(
+        const resizedImageFile = await convertUrltoFile(
           resizedImage,
           "finalImage.jpg"
         );
