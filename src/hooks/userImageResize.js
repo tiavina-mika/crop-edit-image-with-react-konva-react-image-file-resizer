@@ -45,6 +45,7 @@ export const useImageResize = ({ file, layer, zoom }) => {
   useEffect(() => {
     const reSize = async () => {
       try {
+        if (!file) return;
         const originalFile = await convertUrltoFile(
           file.src,
           "originalImage.jpg"
