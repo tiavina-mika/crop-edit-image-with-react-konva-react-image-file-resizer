@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Stage, Layer, Image } from "react-konva";
 import useImage from "use-image";
 
 import mask from "../images/mask-deformed-circle.png";
 
 import Slider from "../components/Slider";
+import Typography from "../components/Typography";
 import { useCropper, ZOOM_MAX, ZOOM_STEP } from "../hooks/useCropper";
-import { resizeFile, useImageResize } from "../hooks/userImageResize";
-import { convertUrltoFile } from "../utils/utils";
+import { useImageResize } from "../hooks/userImageResize";
 import ResizedImage from "./ResizedImage";
 
 const USER_IMAGE_LAYER = {
@@ -69,6 +69,11 @@ const ImageEditor = ({ image }) => {
 
   return (
     <div className="container flexCenter">
+      <div className="m-t-20 m-b-20">
+        <Typography variant="title" level={2}>
+          Crop image
+        </Typography>
+      </div>
       <Stage
         ref={stageRef}
         width={USER_IMAGE_LAYER.width}
@@ -116,14 +121,21 @@ const ImageEditor = ({ image }) => {
           tooltipVisible={false}
         />
       </div>
-      <ResizedImage
-        file={image}
-        resizedImage={resizedImage}
-        initialSize={initialSize}
-        finalSize={finalSize}
-        initialImage={initialImage}
-        finalImage={finalImage}
-      />
+      <div className="flexCenter m-t-20">
+        <div className="m-t-20 ">
+          <Typography variant="title" level={2}>
+            Image details and results
+          </Typography>
+        </div>
+        <ResizedImage
+          file={image}
+          resizedImage={resizedImage}
+          initialSize={initialSize}
+          finalSize={finalSize}
+          initialImage={initialImage}
+          finalImage={finalImage}
+        />
+      </div>
     </div>
   );
 };
