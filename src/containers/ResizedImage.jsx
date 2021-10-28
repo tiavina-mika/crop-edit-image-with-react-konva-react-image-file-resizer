@@ -1,14 +1,34 @@
 import React from "react";
-// import { useImageResize } from "../hooks/userImageResize";
+import PropTypes from "prop-types";
 
-const ResizedImage = ({ file, initialSize, finalSize, resizedImage }) => {
+import Typography from "../components/Typography";
+import { Space } from "antd";
+import Results from "./Results";
+import { IMAGE_RESIZE_MARGIN } from "../styles/constants";
+
+const ResizedImage = ({
+  file,
+  initialSize,
+  finalSize,
+  resizedImage,
+  initialImage,
+  finalImage
+}) => {
   return (
-    <div className="flexCenter p-x-20 p-y-20">
-      <div>
-        <h5>
-          Initial Size: <b>{initialSize / 1000000} MB</b> <br />
-          Final Size: <b>{finalSize / 1000000} MB</b>
-        </h5>
+    <div className="flexCenter p-x-25 p-y-25">
+      <div className="flexRow">
+        <Space size={70}>
+          <Results
+            title="Initial image"
+            size={initialSize}
+            dimensions={initialImage}
+          />
+          <Results
+            title="Final image"
+            size={finalSize}
+            dimensions={finalImage}
+          />
+        </Space>
       </div>
 
       {file && (
@@ -18,11 +38,23 @@ const ResizedImage = ({ file, initialSize, finalSize, resizedImage }) => {
         </div>
       )}
       <div className="flexCenter m-t-25">
-        <h3>Resized image ({finalSize / 1000000})</h3>
+        <h3>
+          Resized image ({finalSize / 1000000}) [with margin x
+          {IMAGE_RESIZE_MARGIN}]
+        </h3>
         <img alt="resized" src={resizedImage} />
       </div>
     </div>
   );
+};
+
+ResizedImage.propTypes = {
+  initialSize: PropTypes.number,
+  finalSize: PropTypes.number,
+  file: PropTypes.any,
+  resizedImage: PropTypes.any,
+  initialImage: PropTypes.any,
+  finalImage: PropTypes.any
 };
 
 export default ResizedImage;

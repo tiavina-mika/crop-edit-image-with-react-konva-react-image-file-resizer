@@ -48,7 +48,13 @@ const ImageEditor = ({ image }) => {
     maskLayer: MASK_LAYER
   });
 
-  const { resizedImage, initialSize, finalSize } = useImageResize({
+  const {
+    resizedImage,
+    initialSize,
+    finalSize,
+    initialImage,
+    finalImage
+  } = useImageResize({
     file: image,
     layer: MASK_LAYER,
     zoom
@@ -115,6 +121,8 @@ const ImageEditor = ({ image }) => {
         resizedImage={resizedImage}
         initialSize={initialSize}
         finalSize={finalSize}
+        initialImage={initialImage}
+        finalImage={finalImage}
       />
     </div>
   );

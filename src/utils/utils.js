@@ -15,3 +15,14 @@ export const convertUrltoFile = async (
   const newFile = await new File([buffer], filename, { type: mimeType });
   return newFile;
 };
+
+// to capitalize only first letter
+export const capitalizeFirstLetter = (string) => {
+  if (
+    !string ||
+    typeof string !== "string" ||
+    (string && string.trim().length === 0)
+  )
+    return "";
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};

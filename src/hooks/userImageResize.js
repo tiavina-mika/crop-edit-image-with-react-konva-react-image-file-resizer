@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import Resizer from "react-image-file-resizer";
+
+import { IMAGE_RESIZE_MARGIN } from "../styles/constants";
 import { convertUrltoFile } from "../utils/utils";
 
 /**
@@ -37,6 +39,8 @@ export const useImageResize = ({ file, layer, zoom }) => {
   const [drawing, setDrawing] = useState("");
   const [initialSize, setInitialSize] = useState(0);
   const [finalSize, setFinalSize] = useState(0);
+  const [initialImage, setInitialImage] = useState(null);
+  const [finalImage, setFinalImage] = useState(null);
 
   useEffect(() => {
     const reSize = async () => {
@@ -48,11 +52,21 @@ export const useImageResize = ({ file, layer, zoom }) => {
         let width;
         let height;
         if (file.naturalWidth * zoom >= layer.width) {
-          width = layer.width * 1.2;
+          width = file.naturalWidth * IMAGE_RESIZE_MARGIN * zoom;
         }
         if (file.naturalHeight * zoom >= layer.height) {
-          height = layer.height * 1.2;
+          height = file.naturalHeight * IMAGE_RESIZE_MARGIN * zoom;
         }
+
+        setInitialImage({
+          width: file.naturalWidth,
+          height: file.naturalHeight
+        });
+        setFinalImage({
+          width,
+          height
+        });
+
         const resizedImage = await resizeFile({
           file: originalFile,
           width,
@@ -85,6 +99,8 @@ export const useImageResize = ({ file, layer, zoom }) => {
   return {
     resizedImage: drawing,
     initialSize,
-    finalSize
+    finalSize,
+    initialImage,
+    finalImage
   };
 };

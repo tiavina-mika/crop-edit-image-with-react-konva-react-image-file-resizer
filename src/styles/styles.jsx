@@ -122,6 +122,9 @@ const getGlobalStyles = () => css`
     opacity: 0.9;
     text-decoration: underline;
   }
+  .underline {
+    text-decoration: underline;
+  }
 
   .initialButton {
     background-color: transparent;
@@ -191,6 +194,14 @@ const getGlobalStyles = () => css`
   .text {
     font-size: 22px !important;
     font-weight: 500;
+  }
+  .smallText {
+    font-size: 18px !important;
+    font-weight: 300;
+  }
+  .extraSmallText {
+    font-size: 16px !important;
+    font-weight: 300;
   }
   .light {
     color: #fff !important;
