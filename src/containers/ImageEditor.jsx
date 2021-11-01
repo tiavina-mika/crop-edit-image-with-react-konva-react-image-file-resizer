@@ -34,6 +34,8 @@ const ImageEditor = ({ image }) => {
     onZoom,
     zoom,
     minZoom,
+    maxZoom,
+    zoomStep,
     handleWheel,
     onDragEnd,
     x,
@@ -112,12 +114,12 @@ const ImageEditor = ({ image }) => {
       </Stage>
       <div className="flexCenter m-t-20 m-b-10">
         <Slider
-          step={ZOOM_STEP}
+          step={zoomStep}
           onChange={onZoom}
           defaultValue={minZoom}
           value={zoom}
           min={minZoom}
-          max={ZOOM_MAX}
+          max={maxZoom}
           tooltipVisible={false}
         />
       </div>

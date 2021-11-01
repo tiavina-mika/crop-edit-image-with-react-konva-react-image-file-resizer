@@ -52,6 +52,8 @@ export const useCropper = ({ image, imageMask, layer, maskLayer }) => {
 
   const [zoom, setZoom] = useState(1);
   const [minZoom, setMinZoom] = useState(1);
+  const [maxZoom, setMaxZoom] = useState(1);
+  const [zoomStep, setZoomStep] = useState(1);
   const invertedMaskRef = useRef();
   const imageRef = useRef();
   const stageRef = useRef();
@@ -73,8 +75,11 @@ export const useCropper = ({ image, imageMask, layer, maskLayer }) => {
     } else {
       defaultZoom = layer.height / image.naturalHeight;
     }
+
     setMinZoom(defaultZoom);
     setZoom(defaultZoom);
+    setMaxZoom(defaultZoom * 2);
+    setZoomStep(defaultZoom / 10);
 
     const containerWidth = maskLayer ? maskLayer.width : layer.width();
     const containerHeight = maskLayer ? maskLayer.height : layer.width();
@@ -123,8 +128,7 @@ export const useCropper = ({ image, imageMask, layer, maskLayer }) => {
     const oldZoom = imageNode.scaleX();
 
     // wheel down = zoom+, wheel up = zoom-
-    const newZoom =
-      e.evt.deltaY > 0 ? oldZoom + ZOOM_STEP : oldZoom - ZOOM_STEP;
+    const newZoom = e.evt.deltaY > 0 ? oldZoom + zoomStep : oldZoom - zoomStep;
 
     if (newZoom < minZoom) return;
     setZoom(newZoom);
@@ -151,10 +155,9 @@ export const useCropper = ({ image, imageMask, layer, maskLayer }) => {
     const oldZoom = imageNode.scaleX();
 
     // wheel down = zoom+, wheel up = zoom-
-    const newZoom =
-      e.evt.deltaY < 0 ? oldZoom + ZOOM_STEP : oldZoom - ZOOM_STEP;
+    const newZoom = e.evt.deltaY < 0 ? oldZoom + zoomStep : oldZoom - zoomStep;
 
-    if (newZoom < minZoom || newZoom > ZOOM_MAX) return;
+    if (newZoom < minZoom || newZoom > maxZoom) return;
     setZoom(newZoom);
 
     const { newX, newY } = centerZoom({
@@ -199,6 +202,8 @@ export const useCropper = ({ image, imageMask, layer, maskLayer }) => {
     imageRef,
     invertedMaskRef,
     stageRef,
+    maxZoom,
+    zoomStep,
     // if needed
     handleWheelRelativeToPointer
   };
