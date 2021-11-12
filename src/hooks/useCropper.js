@@ -249,8 +249,9 @@ export const useCropper = ({ image, imageMask, layer, maskLayer }) => {
     };
 
     const newValue = rotateAroundCenter(attrs, direction === "left" ? -10 : 10);
+
     setX(newValue.x);
-    setY(newValue.Y);
+    setY(newValue.y);
     setRotation(newValue.rotation);
   };
 
