@@ -2,8 +2,10 @@ import React from "react";
 import { Stage, Layer, Image } from "react-konva";
 import useImage from "use-image";
 
+import { Space } from "antd";
 import mask from "../images/mask-deformed-circle.png";
 
+import Button from "../components/Button";
 import Slider from "../components/Slider";
 import Typography from "../components/Typography";
 import { useCropper, ZOOM_MAX, ZOOM_STEP } from "../hooks/useCropper";
@@ -29,7 +31,9 @@ const MASK_LAYER = {
 const ImageEditor = ({ image }) => {
   // Anonymous as crossOrigin to be able to do getImageData on it
   const [imageMask] = useImage(mask, "Anonymous");
+  // const onRotation = () => {
 
+  // }
   const {
     onZoom,
     zoom,
@@ -42,7 +46,9 @@ const ImageEditor = ({ image }) => {
     y,
     imageRef,
     invertedMaskRef,
-    stageRef
+    stageRef,
+    rotate,
+    rotation
   } = useCropper({
     image,
     imageMask,
@@ -98,6 +104,13 @@ const ImageEditor = ({ image }) => {
             scaleY={zoom}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
+            rotation={rotation}
+            // offsetX={image .width}
+            // offsetY={image?.height}
+            // offset={{
+            //   x: x + image.width,
+            //   y: y + image.height,
+            // }}
           />
           {/* --------- mask ---------  */}
           <Image
@@ -112,19 +125,38 @@ const ImageEditor = ({ image }) => {
           />
         </Layer>
       </Stage>
+      {/* ------- buttons -------  */}
       <div className="flexCenter m-t-20 m-b-10">
-        <Slider
-          step={zoomStep}
-          onChange={onZoom}
-          defaultValue={minZoom}
-          value={zoom}
-          min={minZoom}
-          max={maxZoom}
-          tooltipVisible={false}
-        />
+        {/* ------- zoom -------  */}
+        <div className="flexColumn">
+          <div className="m-b-5 stretchSelf flexCenter">
+            <Typography>Zoom</Typography>
+          </div>
+          <Slider
+            step={zoomStep}
+            onChange={onZoom}
+            defaultValue={minZoom}
+            value={zoom}
+            min={minZoom}
+            max={maxZoom}
+            tooltipVisible={false}
+          />
+        </div>
+        {/* ------- rotation -------  */}
+        <div className="flexColumn m-t-20">
+          <div className="m-b-10 stretchSelf flexCenter">
+            <Typography>Rotation</Typography>
+          </div>
+          <Space size={20}>
+            <Button onClick={() => rotate("left")} text="Left" />
+            <Button onClick={() => rotate("right")} text="Right" />
+          </Space>
+        </div>
       </div>
+
+      {/* ------- image details -------  */}
       <div className="flexCenter m-t-20">
-        <div className="m-t-20 ">
+        <div className="m-t-20">
           <Typography variant="title" level={2}>
             Image details and results
           </Typography>

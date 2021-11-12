@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 
 export const ZOOM_STEP = 0.1;
 export const ZOOM_MAX = 4;
@@ -46,6 +46,49 @@ const centerZoom = ({ maskLayer, stage, oldZoom, newZoom, imageNode }) => {
   };
 };
 
+export const degToRad = (angle) => {
+  return (angle / 180) * Math.PI;
+};
+
+export const getCenter = (shape) => {
+  const angleRad = degToRad(shape.rotation || 0);
+  return {
+    x:
+      shape.x +
+      (shape.width / 2) * Math.cos(angleRad) +
+      (shape.height / 2) * Math.sin(-angleRad),
+    y:
+      shape.y +
+      (shape.height / 2) * Math.cos(angleRad) +
+      (shape.width / 2) * Math.sin(angleRad)
+  };
+};
+
+export const rotateAroundPoint = (shape, deltaDeg, point) => {
+  const angleRad = degToRad(deltaDeg);
+  const x = Math.round(
+    point.x +
+      (shape.x - point.x) * Math.cos(angleRad) -
+      (shape.y - point.y) * Math.sin(angleRad)
+  );
+  const y = Math.round(
+    point.y +
+      (shape.x - point.x) * Math.sin(angleRad) +
+      (shape.y - point.y) * Math.cos(angleRad)
+  );
+  return {
+    ...shape,
+    rotation: Math.round(shape.rotation + deltaDeg),
+    x,
+    y
+  };
+};
+
+export const rotateAroundCenter = (shape, deltaDeg) => {
+  const center = getCenter(shape);
+  return rotateAroundPoint(shape, deltaDeg, center);
+};
+
 export const useCropper = ({ image, imageMask, layer, maskLayer }) => {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
@@ -54,6 +97,7 @@ export const useCropper = ({ image, imageMask, layer, maskLayer }) => {
   const [minZoom, setMinZoom] = useState(1);
   const [maxZoom, setMaxZoom] = useState(1);
   const [zoomStep, setZoomStep] = useState(1);
+  const [rotation, setRotation] = useState(0);
   const invertedMaskRef = useRef();
   const imageRef = useRef();
   const stageRef = useRef();
@@ -190,6 +234,26 @@ export const useCropper = ({ image, imageMask, layer, maskLayer }) => {
     setZoom(value);
   };
 
+  const rotate = (direction) => {
+    const imageNode = imageRef.current;
+    // usage
+    const attrs = {
+      x: imageNode.x(),
+      y: imageNode.y(),
+      // width: imageNode.width(),
+      // height: imageNode.height(),
+      // TODO: rotate around the layer or the image
+      width: maskLayer.width,
+      height: maskLayer.height,
+      rotation: imageNode.rotation()
+    };
+
+    const newValue = rotateAroundCenter(attrs, direction === "left" ? -10 : 10);
+    setX(newValue.x);
+    setY(newValue.Y);
+    setRotation(newValue.rotation);
+  };
+
   return {
     onZoom,
     zoom,
@@ -204,6 +268,8 @@ export const useCropper = ({ image, imageMask, layer, maskLayer }) => {
     stageRef,
     maxZoom,
     zoomStep,
+    rotation,
+    rotate,
     // if needed
     handleWheelRelativeToPointer
   };

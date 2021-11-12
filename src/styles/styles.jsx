@@ -163,6 +163,39 @@ const getGlobalStyles = () => css`
     background: none;
     cursor: pointer;
   }
+  .button-default {
+    background-color: #fff;
+    border: 1px solid #e0e0e0 !important;
+    color: ${theme.colors.primary};
+  }
+  .button-default:hover,
+  .button-default:focus {
+    border: 1px solid #808080 !important;
+    color: #000 !important;
+    opacity: 0.9 !important;
+  }
+  .button-danger {
+    background-color: ${theme.colors.errorPrimary};
+    border: 1px solid ${theme.colors.errorPrimary} !important;
+    color: #fff !important;
+  }
+  .button-danger:hover,
+  .button-danger:focus {
+    border: 1px solid ${theme.colors.errorPrimary};
+    background-color: ${theme.colors.errorPrimary};
+    opacity: 0.9;
+  }
+  .button-primary {
+    background-color: ${theme.colors.primary};
+    border: 1px solid ${theme.colors.primary} !important;
+    color: #fff !important;
+  }
+  .button-primary:hover,
+  .button-primary:focus {
+    border: 1px solid ${theme.colors.primary};
+    background-color: ${theme.colors.primary};
+    opacity: 0.9;
+  }
   .formItem {
     border-radius: 4px;
     font-weight: 400;
