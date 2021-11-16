@@ -89,7 +89,6 @@ const ImageEditor = ({ image }) => {
         onWheel={handleWheel}
         x={0}
         y={0}
-        // style={{ backgroundColor: 'rgba(0, 0, 0, 0.8'}}
       >
         <Layer>
           {/* --------- user image ---------  */}
@@ -105,12 +104,6 @@ const ImageEditor = ({ image }) => {
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             rotation={rotation}
-            // offsetX={image .width}
-            // offsetY={image?.height}
-            // offset={{
-            //   x: x + image.width,
-            //   y: y + image.height,
-            // }}
           />
           {/* --------- mask ---------  */}
           <Image
